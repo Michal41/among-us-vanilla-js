@@ -1,9 +1,8 @@
 
-
 function component() {
   const element = document.createElement('div');
 
-  element.innerHTML = 'Hello'
+  element.innerHTML = 'Hello World'
 
   return element;
 }
