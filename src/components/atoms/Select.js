@@ -16,7 +16,6 @@ template.innerHTML = `
 <label class=label></label>
 <select class=select></select>
 `
-
 class Select extends HTMLElement {
     constructor(){
         super();
@@ -43,7 +42,6 @@ class Select extends HTMLElement {
       })
       this.dispatchEvent(myEvent);
     }
-
 
     populateSelectOptions = () => {
       const propValue = this.getAttribute('value')

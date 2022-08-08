@@ -20,7 +20,6 @@ template.innerHTML = `
 </div>
 `
 
-
 class Settings extends HTMLElement {
     constructor(){
         super();
@@ -49,7 +48,6 @@ class Settings extends HTMLElement {
       startButton.addEventListener('onClick', this.handleStartButtonClick)
     }
 }
-
 
 window.customElements.define('application-settings', Settings);
 
