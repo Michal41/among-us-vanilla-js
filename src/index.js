@@ -1,8 +1,9 @@
+import App from "./App";
 
 function component() {
   const element = document.createElement('div');
 
-  element.innerHTML = 'Hello World'
+  element.innerHTML = `<among-us></among-us>`
 
   return element;
 }
