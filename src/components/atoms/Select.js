@@ -23,6 +23,16 @@ class Select extends HTMLElement {
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
     }
+
+    static get observedAttributes() {
+      return ['options', 'value'];
+    }
+
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      this.populateSelectOptions()
+    }
+
     onChange = (event) => {
       const myEvent = new CustomEvent('onChange', {
         bubbles: true,
@@ -34,22 +44,28 @@ class Select extends HTMLElement {
       this.dispatchEvent(myEvent);
     }
 
+
+    populateSelectOptions = () => {
+      const propValue = this.getAttribute('value')
+      const options = JSON.parse(this.getAttribute('options'))
+      const select = this._shadowRoot.querySelector('select')
+      select.innerHTML = options?.map(({label, value}) => (
+        `<option value=${value} ${value == propValue ? 'selected' : ''}>
+          ${label}
+        </option>`
+      ))
+    }
+
     connectedCallback() {
         const name = this.getAttribute('name');
         const labelProp = this.getAttribute('label');
-        const propValue = this.getAttribute('value')
-        const options = JSON.parse(this.getAttribute('options'))
         const label = this._shadowRoot.querySelector('label')
         const select = this._shadowRoot.querySelector('select')
         select.onchange = this.onChange
         select.setAttribute('id', name)
         label.setAttribute('for', name)
         label.innerHTML = labelProp
-        select.innerHTML = options.map(({label, value}) => (
-            `<option value=${value} ${value == propValue ? 'selected' : ''}>
-              ${label}
-            </option>`
-          ))
+        this.populateSelectOptions()
     }
 }
 
