@@ -1,3 +1,4 @@
+import GameBoard from "./components/molecules/GameBoard";
 import PatternBoard from "./components/molecules/PatternBoard";
 import Settings from "./components/molecules/Settings";
 
@@ -11,6 +12,7 @@ template.innerHTML = `
   <div>
     <application-settings id="applicationSettings"></application-settings>
     <pattern-board id="patternBoard"></pattern-board>
+    <game-board id="gameBoard"></game-board>
   </div>
 `
 
@@ -20,23 +22,45 @@ class App extends HTMLElement {
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.pattern = []
-        this.itertation = 0
+        this.iteration = 0
+        this.checkedBoxes = []
+        this.currentLevelPattern = []
     }
     handleNextIteration = () => {
       const patternBoard = this._shadowRoot.querySelector('#patternBoard')
-      patternBoard.setAttribute('activeCell', this.pattern[this.itertation])
-      this.itertation = this.itertation + 1
+      patternBoard.setAttribute('activeCell', this.currentLevelPattern[this.iteration])
+      this.iteration = this.iteration + 1
     }
     handleCreateNewPattern = ({ detail: { level } }) => {
       this.pattern = Array.from({length: level}, () => Math.floor(Math.random() * 16))
-      this.itertation = 0
+      this.iteration = 0
+      this.currentLevelPattern = [this.pattern[0]]
+      this.handleNextIteration()
+    }
+    handleAddcheckedBox = ({ detail: { cel } }) => {
+      const checked = [ ...this.checkedBoxes, parseInt(cel) ]
+      if (checked.length < this.currentLevelPattern.length) {
+        this.checkedBoxes = checked
+        return;
+      }
+      if (JSON.stringify(checked) === JSON.stringify(this.currentLevelPattern)) {
+        this.currentLevelPattern = [...this.currentLevelPattern, this.pattern[this.iteration]]
+        this.iteration = 0
+        this.checkedBoxes = []
+        this.handleNextIteration()
+        return;
+      }
+      this.checkedBoxes = []
+      this.iteration = 0
       this.handleNextIteration()
     }
     connectedCallback() {
       const applicationSettings = this._shadowRoot.querySelector('#applicationSettings')
       const patternBoard = this._shadowRoot.querySelector('#patternBoard')
+      const gameBoard = this._shadowRoot.querySelector('#gameBoard')
       applicationSettings.addEventListener('createNewPattern', this.handleCreateNewPattern)
       patternBoard.addEventListener('nextIteration', this.handleNextIteration)
+      gameBoard.addEventListener('addCheckedBox', this.handleAddcheckedBox)
     }
 }
 

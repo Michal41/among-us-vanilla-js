@@ -45,7 +45,7 @@ class GameBoardCel extends HTMLElement {
         bubbles: true,
         composed: true,
         detail: {
-          cell: this.getAttribute('celNumber')
+          cel: this.getAttribute('celNumber')
         }
       })
       this.dispatchEvent(myEvent);
