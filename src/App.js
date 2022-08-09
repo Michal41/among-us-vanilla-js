@@ -8,11 +8,19 @@ template.innerHTML = `
     * {
       box-sizing: border-box;
     }
+    .container {
+      max-width: 1500px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+    }
   </style>
   <div>
     <application-settings id="applicationSettings"></application-settings>
-    <pattern-board id="patternBoard"></pattern-board>
-    <game-board id="gameBoard"></game-board>
+    <div class="container">
+      <pattern-board id="patternBoard"></pattern-board>
+      <game-board id="gameBoard" blocked="true"></game-board>
+    </div>
   </div>
 `
 
@@ -29,6 +37,9 @@ class App extends HTMLElement {
     handleNextIteration = () => {
       const patternBoard = this._shadowRoot.querySelector('#patternBoard')
       patternBoard.setAttribute('activeCell', this.currentLevelPattern[this.iteration])
+      if(this.iteration  === this.currentLevelPattern.length) {
+        this.setBoardBlocked(false)
+      }
       this.iteration = this.iteration + 1
     }
     handleCreateNewPattern = ({ detail: { level } }) => {
@@ -47,13 +58,20 @@ class App extends HTMLElement {
         this.currentLevelPattern = [...this.currentLevelPattern, this.pattern[this.iteration]]
         this.iteration = 0
         this.checkedBoxes = []
+        this.setBoardBlocked(true)
         this.handleNextIteration()
         return;
       }
       this.checkedBoxes = []
       this.iteration = 0
+      this.setBoardBlocked(true)
       this.handleNextIteration()
     }
+
+    setBoardBlocked = (value) => {
+      this._shadowRoot.querySelector('#gameBoard').setAttribute('blocked', value)
+    }
+
     connectedCallback() {
       const applicationSettings = this._shadowRoot.querySelector('#applicationSettings')
       const patternBoard = this._shadowRoot.querySelector('#patternBoard')

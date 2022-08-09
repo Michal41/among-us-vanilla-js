@@ -24,14 +24,26 @@ template.innerHTML = `
 class GameBoard extends HTMLElement {
     constructor(){
         super();
+        this.blocked = true
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
     }
+    static get observedAttributes() {
+      return ['blocked'];
+    }
 
-    connectedCallback() {
+    attributeChangedCallback(name, oldValue, newValue) {
+      if(name !== 'blocked'){
+        return;
+      }
+      this.blocked = newValue === 'true'
+      this.renderBoard()
+    }
+
+    renderBoard = () => {
       const gameBoard = this._shadowRoot.querySelector('#gameBoard')
       gameBoard.innerHTML = [...Array(16).keys()].map((ceilNumber) =>
-          (`<game-board-cel celNumber=${ceilNumber} disabled=${false}>
+          (`<game-board-cel celNumber=${ceilNumber} disabled=${this.blocked}>
             </game-board-cel>`)).join('')
     }
 }

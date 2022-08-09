@@ -15,6 +15,9 @@ template.innerHTML = `
   .gameCel:disabled {
     cursor: not-allowed;
   }
+  .gameCel:active {
+    background-color: #45a8ff;
+  }
 </style>
 <button class="gameCel"></button>
 `
