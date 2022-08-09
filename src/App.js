@@ -51,6 +51,12 @@ class App extends HTMLElement {
       this.handleNextIteration()
       this.setTaskCompleted(false)
     }
+    handleResetBoard = () => {
+      this.iteration = 0
+      this.currentLevelPattern = [this.pattern[0]]
+      this.checkedBoxes = []
+      this.handleNextIteration()
+    }
     handleAddcheckedBox = ({ detail: { cel } }) => {
       const checked = [ ...this.checkedBoxes, parseInt(cel) ]
       if (checked.length < this.currentLevelPattern.length) {
@@ -84,6 +90,7 @@ class App extends HTMLElement {
       const patternBoard = this._shadowRoot.querySelector('#patternBoard')
       const gameBoard = this._shadowRoot.querySelector('#gameBoard')
       applicationSettings.addEventListener('createNewPattern', this.handleCreateNewPattern)
+      applicationSettings.addEventListener('resetBoard', this.handleResetBoard)
       patternBoard.addEventListener('nextIteration', this.handleNextIteration)
       gameBoard.addEventListener('addCheckedBox', this.handleAddcheckedBox)
     }

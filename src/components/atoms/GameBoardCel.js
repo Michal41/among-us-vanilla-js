@@ -3,8 +3,8 @@ const template = document.createElement('template');
 template.innerHTML = `
 <style>
   .gameCel {
-    width: 115px;
-    height: 115px;
+    width: 120px;
+    height: 120px;
     background-color: #696b69;
     border: 3px solid #252625;
     border-radius: 7%;
