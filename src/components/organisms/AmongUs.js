@@ -1,7 +1,7 @@
-import GameBoard from "./components/molecules/GameBoard";
-import Notyfications from "./components/molecules/Notyfications";
-import PatternBoard from "./components/molecules/PatternBoard";
-import Settings from "./components/molecules/Settings";
+import GameBoard from "../molecules/GameBoard";
+import Notyfications from "../molecules/Notyfications";
+import PatternBoard from "../molecules/PatternBoard";
+import Settings from "../molecules/Settings";
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -26,7 +26,7 @@ template.innerHTML = `
   </div>
 `
 
-class App extends HTMLElement {
+class AmongUs extends HTMLElement {
     constructor(){
         super();
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
@@ -97,6 +97,6 @@ class App extends HTMLElement {
 }
 
 
-window.customElements.define('among-us', App);
+window.customElements.define('among-us', AmongUs);
 
-export default App;
+export default AmongUs;

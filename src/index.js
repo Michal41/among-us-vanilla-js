@@ -1,4 +1,4 @@
-import App from "./App";
+import App from "./components/organisms/AmongUs";
 
 function component() {
   window.addEventListener('error', (event) => {
